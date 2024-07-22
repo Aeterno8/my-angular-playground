@@ -1,0 +1,27 @@
+<div class="matrice-container">
+  <div class="users-column">
+    <div class="user" *ngFor="let user of users">{{ user.name }}</div>
+  </div>
+  <div class="weeks-column">
+    <div class="week"
+         *ngFor="let week of weeks; let i = index"
+         [ngClass]="{'special-week': i === 3}">
+      <div class="week-header">Week {{ i + 1 }}</div>
+      <div class="cells">
+        <div class="cell"
+             *ngFor="let user of users"
+             (click)="editCell(user.id, i)"
+             [ngClass]="{'editable': isEditing(user.id, i)}">
+          <ng-container *ngIf="isEditing(user.id, i); else displayValue">
+            <input [(ngModel)]="editingValue"
+                   (blur)="saveCell(user.id, i)"
+                   (keyup.enter)="saveCell(user.id, i)" />
+          </ng-container>
+          <ng-template #displayValue>
+            {{ getTimeSpent(user.id, i) }}
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
